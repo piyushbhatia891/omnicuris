@@ -76,9 +76,10 @@ public class ProductTransactionServiceFacadeImpl implements ProductTransactionSe
 		inStockItems
 		 	.stream()
 		 	.forEach(product->{
-		 		productsList.get(product.getId())
-		 		.setProductStockCount(productsList.get(product.getId()).getProductStockCount()-product.getProductStockCount());
-		 		productService.saveOrUpdateProduct(productsList.get(product.getId()));
+		 		Product productToBeUpdatedInDb=productsList.get(product.getId());
+		 		productToBeUpdatedInDb
+		 		.setProductStockCount(productToBeUpdatedInDb.getProductStockCount()-product.getProductStockCount());
+		 		productService.saveOrUpdateProduct(productToBeUpdatedInDb);
 		 	});
 	}
 
