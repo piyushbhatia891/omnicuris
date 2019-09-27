@@ -43,9 +43,13 @@ public class ProductTransactionServiceFacadeImpl implements ProductTransactionSe
 		 productService.getProductsList(productIds);
 		 
 		 outOfStockItems=getOutOfStockItemIds(order, productsList);
-		 
+		 //Getting in stock items
 		 inStockItems = getInStockItems(order, productsList);
+		 //Getting order placed
 		 String orderId = placeAnOrder(order, inStockItems);
+		 //Updating inventory count with respect to order
+		 updatingStockBackInInventory(inStockItems, productsList);
+		 
 		 jmsTemplate.convertAndSend("OrderPlacedQueue","Order has been placed");
 		 if(null!=outOfStockItems || outOfStockItems.equals("")) {
 		 return new ResponseEntity<Object>(
@@ -65,6 +69,17 @@ public class ProductTransactionServiceFacadeImpl implements ProductTransactionSe
 				 } 
 			 }
 		 
+	}
+
+
+	private void updatingStockBackInInventory(List<Product> inStockItems, Map<String, Product> productsList) {
+		inStockItems
+		 	.stream()
+		 	.forEach(product->{
+		 		productsList.get(product.getId())
+		 		.setProductStockCount(productsList.get(product.getId()).getProductStockCount()-product.getProductStockCount());
+		 		productService.saveOrUpdateProduct(productsList.get(product.getId()));
+		 	});
 	}
 
 
