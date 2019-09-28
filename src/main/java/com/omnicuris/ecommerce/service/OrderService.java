@@ -3,17 +3,17 @@ package com.omnicuris.ecommerce.service;
 import java.util.List;
 
 import com.omnicuris.ecommerce.enums.OrderStatus;
-import com.omnicuris.ecommerce.models.Order;
+import com.omnicuris.ecommerce.models.OrderRestDTO;
 
 
 public interface OrderService {
 
-	List<Order> findAllOrders();
+	List<OrderRestDTO> findAllOrders();
 	boolean findOrderWithMatchingOrderId(String orderId);
-	Order findOrderDetailsWithMatchingOrderId(String orderId);
-	Order saveOrUpdateOrder(Order order);
+	OrderRestDTO findOrderDetailsWithMatchingOrderId(String orderId);
+	OrderRestDTO saveOrUpdateOrder(OrderRestDTO order);
 	void deleteOrder(String orderId);
 	
-	Order findByStatus(OrderStatus status);
+	OrderRestDTO findByStatus(OrderStatus status);
 	
 }

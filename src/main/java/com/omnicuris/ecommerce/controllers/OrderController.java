@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.omnicuris.ecommerce.models.Order;
+import com.omnicuris.ecommerce.models.OrderRestDTO;
+import com.omnicuris.ecommerce.models.OrderRestModel;
 import com.omnicuris.ecommerce.service.OrderService;
 import com.omnicuris.ecommerce.service.ProductTransactionServiceFacade;
 
@@ -34,7 +35,7 @@ public class OrderController {
 	 */
     @RequestMapping("/orders") 
     public ResponseEntity<Object> getOrders(){    	
-        List<Order> orders=orderService.findAllOrders();
+        List<OrderRestDTO> orders=orderService.findAllOrders();
         return new ResponseEntity<Object>(orders, HttpStatus.OK);   
     }
     
@@ -42,7 +43,7 @@ public class OrderController {
 	 * Api call for making single or bulk order
 	 */
     @RequestMapping(value = "/orders/new",method = RequestMethod.POST)
-    public ResponseEntity<Object> createNewOrder(@RequestBody @Valid Order order){
+    public ResponseEntity<Object> createNewOrder(@RequestBody @Valid OrderRestModel order){
     	return orderFacadeService.checkForInventoryAndRaiseAProductTransaction(order);
     }
     

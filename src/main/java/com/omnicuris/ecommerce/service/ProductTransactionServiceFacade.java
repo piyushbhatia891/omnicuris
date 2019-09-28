@@ -4,9 +4,10 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
-import com.omnicuris.ecommerce.models.Order;
+import com.omnicuris.ecommerce.models.OrderRestDTO;
+import com.omnicuris.ecommerce.models.OrderRestModel;
 
 public interface ProductTransactionServiceFacade {
 
-	ResponseEntity<Object> checkForInventoryAndRaiseAProductTransaction(Order order);
+	ResponseEntity<Object> checkForInventoryAndRaiseAProductTransaction(OrderRestModel order);
 }

@@ -1,28 +1,33 @@
 package com.omnicuris.ecommerce.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.omnicuris.ecommerce.enums.OrderStatus;
-import com.omnicuris.ecommerce.models.Order;
+import com.omnicuris.ecommerce.models.OrderRestDTO;
 import com.omnicuris.ecommerce.repository.OrderRepository;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
 	
 	@Override
-	public List<Order> findAllOrders(){
-		List<Order> productList=new ArrayList<Order>();
+	public List<OrderRestDTO> findAllOrders(){
+		List<OrderRestDTO> productList=new ArrayList<OrderRestDTO>();
 		orderRepository.findAll().forEach((product)->{
 			productList.add(product);
 		});
 		return productList;
 	}
-	public Order findOrderDetailsWithMatchingOrderId(String orderId){
+	public OrderRestDTO findOrderDetailsWithMatchingOrderId(String orderId){
 		return orderRepository.findOne(orderId);
 	}
 	@Override
@@ -33,14 +38,15 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public Order saveOrUpdateOrder(Order order){
-		return orderRepository.save(order);
+	public OrderRestDTO saveOrUpdateOrder(OrderRestDTO order){
+		order.setDateCreated(LocalDate.now());
+        return this.orderRepository.save(order);
 	}  
 	
 	public void deleteOrder(String orderId){
 		orderRepository.delete(orderId);
 	}
-	public Order findByStatus(OrderStatus status) {
+	public OrderRestDTO findByStatus(OrderStatus status) {
 		return orderRepository.findByStatus(status);
 	}
 	
